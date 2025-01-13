@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        if (n == 0) return 0; // Edge case: no bars, no water
+        
+        // Step 1: Find the peak bar
+        int max_ele = *max_element(height.begin(), height.end());
+        int peak_index = 0;
+        for (int i = 0; i < n; i++) {
+            if (height[i] == max_ele) {
+                peak_index = i;
+                break;
+            }
+        }
+        
+        // Step 2: Traverse the left side
+        int left_max = height[0], total_water = 0;
+        for (int i = 1; i < peak_index; i++) {
+            if (height[i] < left_max) {
+                total_water += left_max - height[i];
+            } else {
+                left_max = height[i];
+            }
+        }
+        
+        // Step 3: Traverse the right side
+        int right_max = height[n - 1];
+        for (int i = n - 2; i > peak_index; i--) {
+            if (height[i] < right_max) {
+                total_water += right_max - height[i];
+            } else {
+                right_max = height[i];
+            }
+        }
+        
+        return total_water;
+    }
+};
